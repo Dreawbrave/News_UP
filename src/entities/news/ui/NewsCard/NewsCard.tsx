@@ -8,16 +8,21 @@ interface Props {
   item: INews;
   type: "banner" | "item";
   viewNewsSlot?: (news: INews) => ReactNode;
+  onImageError?: () => void;
 }
 
-const NewsCard = ({ item, type = "item", viewNewsSlot }: Props) => {
+const NewsCard = ({ item, type = "item", viewNewsSlot, onImageError }: Props) => {
+  // Не рендерим карточку, если urlToImage невалидный
+  const isValid = typeof item.urlToImage === 'string' && item.urlToImage.trim() !== '' && item.urlToImage.startsWith('http');
+  if (!isValid) return null;
+
   return (
     <li className={`${styles.card} ${type === "banner" && styles.banner}`}>
       {type === "banner" ? (
-        <Image image={item.urlToImage} />
+        <Image image={item.urlToImage} onError={onImageError} />
       ) : (
         <div className={styles.wrapper}>
-          <Image image={item.urlToImage} />
+          <Image image={item.urlToImage} onError={onImageError} />
         </div>
       )}
 

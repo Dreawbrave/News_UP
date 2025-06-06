@@ -3,6 +3,7 @@ import { useState } from "react";
 
 interface Props {
   image?: string;
+  onError?: () => void;
 }
 
 const SvgPlaceholder = () => (
@@ -25,11 +26,16 @@ const SvgPlaceholder = () => (
   </svg>
 );
 
-const Image = ({ image }: Props) => {
+const Image = ({ image, onError }: Props) => {
   const [loaded, setLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
   const isValid = typeof image === 'string' && image.trim() !== '';
   const src = isValid ? image! : undefined;
+
+  const handleError = () => {
+    setImgError(true);
+    if (onError) onError();
+  };
 
   return (
     <div className={styles.wrapper} style={{ position: 'relative' }}>
@@ -45,7 +51,7 @@ const Image = ({ image }: Props) => {
           alt="news"
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: loaded ? 1 : 0, transition: 'opacity 0.2s' }}
           onLoad={() => setLoaded(true)}
-          onError={() => setImgError(true)}
+          onError={handleError}
           draggable={false}
         />
       )}
