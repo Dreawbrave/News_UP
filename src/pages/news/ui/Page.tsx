@@ -9,7 +9,7 @@ const NewsPage = () => {
   if (!currentNews) {
     return (
       <div>
-        <h1>Cannot find news</h1>
+        <h1>News not found</h1>
         <Link to={"/"}>
           <h3>Go to main page</h3>
         </Link>

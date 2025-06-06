@@ -14,12 +14,11 @@ const NewsCard = ({ item, type = "item", viewNewsSlot }: Props) => {
   return (
     <li className={`${styles.card} ${type === "banner" && styles.banner}`}>
       {type === "banner" ? (
-        <Image image={item?.urlToImage} />
+        <Image image={item.urlToImage} />
       ) : (
-        <div
-          className={styles.wrapper}
-          style={{ backgroundImage: `url(${item.urlToImage})` }}
-        ></div>
+        <div className={styles.wrapper}>
+          <Image image={item.urlToImage} />
+        </div>
       )}
 
       <div className={styles.info}>

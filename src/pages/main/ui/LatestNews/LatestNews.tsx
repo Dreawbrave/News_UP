@@ -13,18 +13,20 @@ const LatestNews = () => {
 
   const navigateTo = (news: INews) => {
     dispatch(setCurrentNews(news));
-    navigate(`/news/${news.id}`);
+    navigate(`/news/${news.title.replace(/[^a-zA-Z0-9]/g, "-")}`);
   };
+
+  const articles: INews[] = (data && Array.isArray(data.articles)) ? data.articles : [];
 
   return (
     <section className={styles.section}>
       <NewsList
         type="banner"
         direction="row"
-        news={data && data.news}
+        news={articles}
         isLoading={isLoading}
         viewNewsSlot={(news: INews) => (
-          <p onClick={() => navigateTo(news)}>view more...</p>
+          <p onClick={() => navigateTo(news)} style={{ cursor: "pointer", color: "#6b4eff" }}>View more...</p>
         )}
       />
     </section>

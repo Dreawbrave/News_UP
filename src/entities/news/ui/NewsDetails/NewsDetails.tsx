@@ -7,32 +7,35 @@ interface Props {
   item: INews;
 }
 
+// Удаляет все HTML-теги из строки
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]+>/g, "");
+}
+
 const NewsDetails = ({ item }: Props) => {
-  // Проверяем, обрезан ли контент
+  // Check if content is truncated
   const isTruncated = item.content && /\[\+\d+ chars\]$/.test(item.content);
-  const contentText = item.content ? item.content.replace(/\[\+\d+ chars\]$/, "...") : "";
+  const contentText = item.content ? stripHtml(item.content.replace(/\[\+\d+ chars\]$/, "...")) : "";
 
   return (
     <div className={styles.details}>
       <Image image={item.urlToImage} />
       <div className={styles.description}>
         <h2>{item.title}</h2>
-        <p><b>Источник:</b> {item.source.name}</p>
-        <p><b>Автор:</b> {item.author || 'Неизвестен'}</p>
-        <p><b>Опубликовано:</b> {formatTimeAgo(item.publishedAt)}</p>
+        <p><b>Source:</b> {item.source.name}</p>
+        <p><b>Author:</b> {item.author || 'Unknown'}</p>
+        <p><b>Published:</b> {formatTimeAgo(item.publishedAt)}</p>
         {contentText && (
-          <p><b>Контент:</b> {contentText} {isTruncated && <span>... <a className={styles.readmore} target="_blank" rel="noopener noreferrer" href={item.url}>Читать полностью</a></span>}</p>
+          <p><b>Content:</b> {contentText}</p>
         )}
-        {!contentText && (
-          <a
-            className={styles.readmore}
-            target="_blank"
-            rel="noopener noreferrer"
-            href={item.url}
-          >
-            Читать полностью на оригинальном сайте
-          </a>
-        )}
+        <a
+          className={styles.readmore}
+          target="_blank"
+          rel="noopener noreferrer"
+          href={item.url}
+        >
+          Read full article on the original website
+        </a>
       </div>
     </div>
   );
