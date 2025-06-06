@@ -23,9 +23,14 @@ const NewsList = ({ news, type = "item", viewNewsSlot }: Props) => {
     navigate(`/news/${item.title.replace(/[^a-zA-Z0-9]/g, "-")}`);
   };
 
+  // Фильтруем только новости с валидной картинкой
+  const filteredNews = news.filter(
+    (item) => typeof item.urlToImage === 'string' && item.urlToImage.trim() !== '' && item.urlToImage.startsWith('http')
+  );
+
   return (
     <ul className={`${type === "item" ? styles.items : styles.banners}`}>
-      {news?.map((item) => {
+      {filteredNews.map((item) => {
         return (
           <li
             key={item.url}
